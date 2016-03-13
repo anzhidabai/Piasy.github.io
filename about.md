@@ -22,9 +22,9 @@ I’m Piasy (建林，许). I receive my Bachelor degree on Computer Science in 
 
 **[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**, an Android TDD bootstrap project, with well designed architecture and collection of awesome libraries;
 
-**[notes](https://github.com/Piasy/notes)**, this is my tech notes in daily reading and practicing;
+**[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)**, Android Audio encapsulation library, with part Rx support;
 
-**[HandyWidgets](https://github.com/Piasy/HandyWidgets)**, some custom views made in daily development;
+**[notes](https://github.com/Piasy/notes)**, this is my tech notes in daily reading and practicing;
 
 For more projects, please see [my Github profile](https://github.com/Piasy).
 

@@ -20,9 +20,9 @@ permalink: /about-zh/
 
 **[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**，安卓开发工程模板，使用先进工程架构，流行第三方工具/库，遵循业界编码规范，TDD/code coverage/continuous integration/code quality支持，同时对新潮技术进行尝试，旨在让开发者可以快速开启新的项目，同时保持代码质量；
 
-**[notes](https://github.com/Piasy/notes)**，日常学习过程中记录的笔记，有些觉得对他人有帮助的会投稿到开发者头条；
+**[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)**，这可能是目前最鲁棒的Android声音录制和播放封装库了；
 
-**[HandyWidgets](https://github.com/Piasy/HandyWidgets)**，在开发过程中实现的一些自定义UI组件；
+**[notes](https://github.com/Piasy/notes)**，日常学习过程中记录的笔记，有些觉得对他人有帮助的会投稿到开发者头条；
 
 ### 规划
 
