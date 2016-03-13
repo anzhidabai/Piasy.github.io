@@ -25,7 +25,7 @@ footer-links:
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md", "_drafts"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 
 
@@ -79,7 +79,43 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "It helps SEO",
-        href: "#"
+        title: "安卓开发者官博",
+        href: "http://android-developers.blogspot.com/"
+    },
+    {
+        title: "老罗的Android之旅",
+        href: "http://blog.csdn.net/Luoshengyang"
+    },
+    {
+        title: "胡凯",
+        href: "http://hukai.me/"
+    },
+    {
+        title: "代码家",
+        href: "http://blog.daimajia.com/"
+    },
+    {
+        title: "Trinea",
+        href: "http://www.trinea.cn/"
+    },
+    {
+        title: "郭霖的专栏",
+        href: "http://blog.csdn.net/guolin_blog"
+    },
+    {
+        title: "stormzhang博客精华",
+        href: "http://stormzhang.com/"
+    },
+    {
+        title: "张鸿洋",
+        href: "http://blog.csdn.net/lmj623565791/"
+    },
+    {
+        title: "张兴业的博客",
+        href: "http://blog.csdn.net/xyz_lmn"
+    },
+    {
+        title: "hi大头鬼hi",
+        href: "http://blog.csdn.net/lzyzsd/"
     }
 ]
