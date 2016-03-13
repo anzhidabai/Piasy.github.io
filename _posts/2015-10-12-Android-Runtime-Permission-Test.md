@@ -12,28 +12,72 @@ Android 6.0引入了Runtime Permission模型，一方面用户不必在安装APP
 ## 快速使用运行时权限
 +  在AndroidManifest.xml中声明权限，就算是运行时权限，这一步也是不能忘记的：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=AndroidManifest.xml"></script></p>
+~~~ xml
+<uses-permission android:name="android.permission.READ_CONTACTS"/>
+~~~
 
 +  检查系统版本：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=CheckSDKVersion.java"></script></p>
+~~~ java
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    // 继续
+}
+~~~
 
 +  检查是否被授权：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=CheckSelfPermission.java"></script></p>
+~~~ java
+switch (checkSelfPermission(Manifest.permission.READ_CONTACTS)) {
+    case PackageManager.PERMISSION_GRANTED:
+        // 已有授权
+        break;
+    case PackageManager.PERMISSION_DENIED:
+        // 没有权限：尚未请求过权限，或者请求授权被拒绝，或者曾经授权过，
+        // 但被用户在设置中禁用权限
+        break;
+    default:
+        // 其实只会返回上述两种情况
+        break;
+}
+~~~
 
 +  如果当前没有权限，则请求权限：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=RequestPermissions.java"></script></p>
+~~~ java
+requestPermissions(new String[] { Manifest.permission.READ_CONTACTS },
+                        REQUEST_PERMISSION);
+~~~
 
 +  处理授权请求回调：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=OnRequestPermissionsResult.java"></script></p>
+~~~ java
+@Override
+public void onRequestPermissionsResult(int requestCode, 
+        @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (requestCode == REQUEST_PERMISSION) {
+        if (permissions.length == 1 &&
+                permissions[0].equals(Manifest.permission.READ_CONTACTS) &&
+                grantResults.length == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 授权请求被通过，读取通讯录
+            } else {
+                // 授权请求被拒绝
+            }
+        } else {
+            // 其他情况
+        }
+    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
+~~~
 
 ## 进一步深入
 系统还提供了一个API：
 
-<p><script src="https://gist.github.com/Piasy/11948c71839dd87c8898.js?file=ShouldShowRequestPermissionRationale.java"></script></p>
+~~~ java
+public boolean shouldShowRequestPermissionRationale(
+        @NonNull String permission)
+~~~
 
 文档中的描述比较晦涩，“显示Rationale是为了解释不那么明显的权限请求，该方法就是检查是否需要显示Rationale，例如相机应用请求定位权限”，那么这个函数到底是干什么用的呢？它的行为有何规律？
 

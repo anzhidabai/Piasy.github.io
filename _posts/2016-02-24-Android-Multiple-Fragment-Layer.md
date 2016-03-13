@@ -13,7 +13,7 @@ tags:
 
 ## 有图有真相
 
-<img src="/img/11/multiple-fragment-demo.gif" alt="multiple-fragment-demo.gif" height="500px">
+<img src="/img/11/multiple-fragment-demo.gif" alt="multiple-fragment-demo" style="height:400px">
 
 ## 解决思路
 目前想到了三种思路：

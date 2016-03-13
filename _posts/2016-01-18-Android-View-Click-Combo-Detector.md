@@ -11,7 +11,7 @@ tags:
 
 ## 效果有图有真相
 
-![combo-demo.gif](/img/8/combo-demo.gif)
+<img src="/img/8/combo-demo.gif" alt="combo-demo" style="height:400px">
 
 ## 原理
 
@@ -19,7 +19,40 @@ tags:
 
 核心代码如下：
 
-<p><script src="https://gist.github.com/Piasy/fa4fe934e7feaa3fbedb.js?file=RxComboDetector.java"></script></p>
+~~~ java
+static Observable<Integer> detect(Observable<Void> clicks, final long maxIntervalMillis,
+        final int minComboTimesCared) {
+    return clicks.map(new Func1<Void, Integer>() {
+            @Override
+            public Integer call(Void aVoid) {
+                return 1;
+            }
+        }).timestamp()
+        .scan(new Func2<Timestamped<Integer>, Timestamped<Integer>, Timestamped<Integer>>() {
+            @Override
+            public Timestamped<Integer> call(Timestamped<Integer> lastOne,
+                    Timestamped<Integer> thisOne) {
+                if (thisOne.getTimestampMillis() - lastOne.getTimestampMillis() <=
+                        maxIntervalMillis) {
+                    return new Timestamped<>(thisOne.getTimestampMillis(),
+                            lastOne.getValue() + 1);
+                } else {
+                    return new Timestamped<>(thisOne.getTimestampMillis(), 1);
+                }
+            }
+        }).map(new Func1<Timestamped<Integer>, Integer>() {
+            @Override
+            public Integer call(Timestamped<Integer> timestamped) {
+                return timestamped.getValue();
+            }
+        }).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer combo) {
+                return combo >= minComboTimesCared;
+            }
+        });
+}
+~~~
 
 具体实现上采用了多个RxJava的operator：
 
@@ -34,7 +67,20 @@ tags:
 
 `RxComboDetector`的创建采用builder模式进行创建，完整使用代码如下：
 
-<p><script src="https://gist.github.com/Piasy/fa4fe934e7feaa3fbedb.js?file=RxComboDetectorDemo.java"></script></p>
+~~~ java
+new RxComboDetector.Builder()
+    .maxIntervalMillis(500)
+    .minComboTimesCared(3)
+    .detectOn(mBtnCombo)
+    .start()
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(new Action1<Integer>() {
+        @Override
+        public void call(Integer combo) {
+            // do something
+        }
+    });
+~~~
 
 使用builder来配置连击判断最大时间间隔，以及过滤掉低连击事件的阈值。
 

@@ -63,19 +63,35 @@ RxAndroidAudio之所以叫Rx，就是因为它尽可能的提供了Reactive的AP
 
 RxAudioPlayer播放声音文件：
 
-<p><script src="https://gist.github.com/Piasy/ef898e7e62fc5fbd1189.js?file=RxAudioPlayerRxAPI.java"></script></p>
+~~~ java
+public Single<Boolean> play(@NonNull final File audioFile);
+
+public Single<Boolean> play(final Context context, @RawRes final int audioRes);
+~~~
 
 当然RxAudioPlayer也提供了传统的API：
 
-<p><script src="https://gist.github.com/Piasy/ef898e7e62fc5fbd1189.js?file=RxAudioPlayerNonRxAPI.java"></script></p>
+~~~ java
+public boolean playNonRxy(@NonNull final File audioFile,
+        final MediaPlayer.OnCompletionListener onCompletionListener,
+        final MediaPlayer.OnErrorListener onErrorListener);
+        
+public boolean playNonRxy(final Context context, @RawRes final int audioRes,
+        final MediaPlayer.OnCompletionListener onCompletionListener,
+        final MediaPlayer.OnErrorListener onErrorListener);
+~~~
 
 RxAmplitude获取当前说话音量等级：
 
-<p><script src="https://gist.github.com/Piasy/ef898e7e62fc5fbd1189.js?file=RxAmplitudeAPI.java"></script></p>
+~~~ java
+public static Observable<Integer> from(@NonNull AudioRecorder audioRecorder);
+~~~
 
 当然RxAmplitude使用的是AudioRecorder的传统API：
 
-<p><script src="https://gist.github.com/Piasy/ef898e7e62fc5fbd1189.js?file=NonRxAmplitudeAPI.java"></script></p>
+~~~ java
+public synchronized int getMaxAmplitude();
+~~~
 
 ## 使用
 详情请见[Github主页](https://github.com/Piasy/RxAndroidAudio)以及[demo app工程](https://github.com/Piasy/RxAndroidAudio/tree/master/app)。[demo apk下载地址](https://www.pgyer.com/rsyU)。

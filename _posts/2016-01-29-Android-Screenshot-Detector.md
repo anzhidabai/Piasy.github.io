@@ -11,7 +11,7 @@ tags:
 
 ## 效果有图有真相
 
-![screenshot-detector-demo.gif](/img/9/screenshot-detector-demo.gif)
+<img src="/img/9/screenshot-detector-demo.gif" alt="screenshot-detector-demo" style="height:400px">
 
 ## 原理
 
@@ -25,7 +25,55 @@ tags:
 
 核心代码如下：
 
-<p><script src="https://gist.github.com/Piasy/8cda8672231529c430dc.js?file=RxScreenshotDetector.java"></script></p>
+~~~ java
+private static final String TAG = "RxScreenshotDetector";
+private static final String EXTERNAL_CONTENT_URI_MATCHER =
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString();
+private static final String[] PROJECTION = new String[] {
+        MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
+        MediaStore.Images.Media.DATE_ADDED
+};
+private static final String SORT_ORDER = MediaStore.Images.Media.DATE_ADDED + " DESC";
+private static final long DEFAULT_DETECT_WINDOW_SECONDS = 10;
+
+final ContentResolver contentResolver = context.getContentResolver();
+final ContentObserver contentObserver = new ContentObserver(null) {
+    @Override
+    public void onChange(boolean selfChange, Uri uri) {
+        Log.d(TAG, "onChange: " + selfChange + ", " + uri.toString());
+        if (uri.toString().matches(EXTERNAL_CONTENT_URI_MATCHER)) {
+            Cursor cursor = null;
+            try {
+                cursor = contentResolver.query(uri, PROJECTION, null, null,
+                        SORT_ORDER);
+                if (cursor != null && cursor.moveToFirst()) {
+                    String path = cursor.getString(
+                            cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    long dateAdded = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.Images.Media.DATE_ADDED));
+                    long currentTime = System.currentTimeMillis() / 1000;
+                    Log.d(TAG, "path: " + path + ", dateAdded: " + dateAdded +
+                            ", currentTime: " + currentTime);
+                    if (path.toLowerCase().contains("screenshot") &&
+                            Math.abs(currentTime - dateAdded) <=
+                                    DEFAULT_DETECT_WINDOW_SECONDS) {
+                        // screenshot added!
+                    }
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "open cursor fail");
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        super.onChange(selfChange, uri);
+    }
+};
+contentResolver.registerContentObserver(
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, contentObserver);
+~~~
 
 主要有以下几点需要注意：
 
@@ -36,7 +84,28 @@ tags:
 
 `RxScreenshotDetector`完整使用代码如下：
 
-<p><script src="https://gist.github.com/Piasy/8cda8672231529c430dc.js?file=RxScreenshotDetectorDemo.java"></script></p>
+~~~ java
+RxScreenshotDetector.start(getApplicationContext())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(this.<String>bindUntilEvent(ActivityEvent.PAUSE))
+        .subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(String path) {
+                mTextView.setText(mTextView.getText() + "\nScreenshot: " + path);
+            }
+        });
+~~~
 
 这里使用了[RxLifecycle](https://github.com/trello/RxLifecycle)，在Activity onPause之后unsubscribe，以保证不会发生内存泄漏。此外subscribe传入的是完整的Subscriber，是为了防止授权失败时没有onError处理器，导致crash。
 
