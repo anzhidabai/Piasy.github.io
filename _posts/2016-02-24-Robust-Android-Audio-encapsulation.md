@@ -1,6 +1,10 @@
 ---
 layout: post
 title: 解决A/libc Fatal signal 11 (SIGSEGV)错误，这可能是目前最鲁棒的Android声音录制和播放封装库了
+tags:
+    - 安卓开发
+    - 音频
+    - Reactive eXtention
 ---
 
 安卓开发过程中一旦开始和硬件打交道，以及涉及到一定的native代码之后，各种闪退就开始浮出水面了，声音录制和播放当然不例外，其中最摸不着头脑的就是A/libc: Fatal signal 11 (SIGSEGV) at了。本文总结了YOLO安卓客户端大半年来的安卓音频实践，整理出一套系统API的封装，命名为[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)。

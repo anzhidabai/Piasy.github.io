@@ -1,6 +1,9 @@
 ---
 layout: post
 title: 完美解决安卓上层输入控件随键盘弹起，下层UI不变形问题
+tags:
+    - 安卓开发
+    - 奇技淫巧
 ---
 
 在YOLO的直播间内，可以发送文字评论，要求文字输入框随键盘弹起，而底下的视频又不会变形，也不会被顶上去，这个问题曾一度困扰我们很久，适逢大师兄公司安卓工程师也遇到了同样的问题，所以简单整理成一篇文章，供更多开发者参考。[本文源码地址](https://github.com/Piasy/AndroidPlayground/tree/d1c55d319111f0743d1cca5d1aa75a3553da72f9/multiplefragmentlayerdemo)。

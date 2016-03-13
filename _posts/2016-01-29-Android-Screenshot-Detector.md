@@ -1,6 +1,10 @@
 ---
 layout: post
 title: RxScreenshotDetector：Android 截屏检测
+tags:
+    - 安卓开发
+    - 截屏检测
+    - Reactive eXtention
 ---
 
 应PM需求，YOLO可能会对直播过程中的截屏进行检测并通知其他人，类似于Snapchat，此时iOS同事再次表达了先天优势，iOS系统提供了API呀！Google无果之后决定再次造轮子，为了持续表达对Rx的敬意，命名为`RxScreenshotDetector`，[github 源码地址](https://github.com/Piasy/RxScreenshotDetector)。

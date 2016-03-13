@@ -1,6 +1,9 @@
 ---
 layout: post
 title: APP启动加速，以及使用FSA来处理状态转换避免Activity state loss
+tags:
+    - 安卓开发
+    - 性能优化
 ---
 
 随着APP的不断开发，启动时（Application类的onCreate函数中）需要做的事情越来越多，这将导致APP冷启动（杀死进程后的第一次启动）变慢，有分析表明，APP冷启动时间大于2s时，大部分用户将失去耐心。

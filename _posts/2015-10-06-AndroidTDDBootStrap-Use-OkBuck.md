@@ -1,6 +1,10 @@
 ---
 layout: post
 title: 手把手OkBuck教程：应用到AndroidTDDBootStrap项目
+tags:
+    - 安卓开发
+    - RAD
+    - BUCK
 ---
 
 【注：本文信息已经过时，请看[续章]({{ site.baseurl }}/AndroidTDDBootStrap-Use-OkBuck-2/)】在本文中，我将一步一步手把手记录如何在[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)项目中使用[OkBuck](https://github.com/Piasy/OkBuck)插件，使得AndroidTDDBootStrap支持BUCK构建，体验其畅快淋漓！

@@ -1,6 +1,10 @@
 ---
 layout: post
 title: RxComboDetector：Android view点击“连击”检测
+tags:
+    - 安卓开发
+    - 连击检测
+    - Reactive eXtention
 ---
 
 今天迷迷糊糊听见iOS同事对PM说“连击检测”其实只需要传一个参数就行了，我大为震惊，iOS竟有如此炫酷的API，Android似乎没有呀！在google和github搜索两次之后无果，我决定自己实现一个连击检测的库。因为主要使用RxJava实现，所以命名为`RxComboDetector`，[github 源码地址](https://github.com/Piasy/RxComboDetector)。
