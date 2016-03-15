@@ -16,9 +16,9 @@ permalink: /about-zh/
 
 **YOLO**（安卓客户端），熟人间私密视频直播互动工具，负责开发维护，[官网](https://www.yoloyolo.tv/)；
 
-**[OkBuck](https://github.com/Piasy/OkBuck)**，一个gradle插件，通过简单几行配置后即可使用facebook开源构建系统BUCK，提升安卓开发者生产力，该插件旨在降低安卓开发者引入BUCK、使用BUCK的门槛，更高效的进行开发；
+**[OkBuck](https://github.com/Piasy/OkBuck)**，一个Gradle插件，通过简单几行配置后即可使用facebook开源构建系统BUCK，提升安卓开发者生产力，该插件旨在降低安卓开发者引入BUCK、使用BUCK的门槛，更高效的进行开发；
 
-**[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**，安卓开发工程模板，使用先进工程架构，流行第三方工具/库，遵循业界编码规范，TDD/code coverage/continuous integration/code quality支持，同时对新潮技术进行尝试，旨在让开发者可以快速开启新的项目，同时保持代码质量；
+**[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**，安卓开发工程模板，使用先进工程架构，流行第三方工具/库，遵循业界编码规范，TDD / code coverage / CI / code quality支持，旨在让开发者可以快速开启新的项目，同时保持代码质量；
 
 **[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)**，这可能是目前最鲁棒的Android声音录制和播放封装库了；
 

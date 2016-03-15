@@ -10,7 +10,7 @@ I enjoy coding. I’m focusing on Android development now, and I love open sourc
 
 ### Summary
 
-I’m Piasy (建林，许). I receive my Bachelor degree on Computer Science in Tsinghua University. During my college time, I did internship in Baidu, Inc. and YOUNG team, maintaining C++ platform and develop Android client respectively. I appreciate technology, love technology, and enjoy dealing real-life challenge, improving productivity, and making life more colorful, with technology. Now I’m focusing on Android development, but my sight will never be limited in it, instead I’ll be excited to know awesome technologies in every field. I do believe what one of my mentor in college said: We are not genius, but we could become more excellent than most of others with harder working. And I am now on my way to become a technological master. My dev blog is [http://blog.piasy.com/](http://blog.piasy.com/).
+I’m Piasy (建林，许). I receive my Bachelor degree on Computer Science in Tsinghua University. During my college time, I did internship in Baidu, Inc. and YOUNG team, maintaining C++ platform and develop Android client respectively. I appreciate technology, love technology, and enjoy dealing real-life challenge, improving productivity, and making life more colorful, with technology. Now I’m focusing on Android development, but my sight will never be limited in it, instead I’ll be excited to know awesome technologies in every field. I do believe what one of my mentor in college said: We are not genius, but we could become more excellent than most of others with harder working. And I am now on my way to become an expert. My dev blog is [http://blog.piasy.com/](http://blog.piasy.com/).
 
 ### What I have built
 
@@ -18,11 +18,11 @@ I’m Piasy (建林，许). I receive my Bachelor degree on Computer Science in 
 
 **YOLO** (Android client), live streaming app for friends, it keeps privacy, and has awesome interaction between users, develop & maintain, [official link](https://www.yoloyolo.tv/);
 
-**[OkBuck](https://github.com/Piasy/OkBuck)**, a gradle plugin, help Android developers to utilize the super fast build system BUCK with several lines configuration;
+**[OkBuck](https://github.com/Piasy/OkBuck)**, a Gradle plugin, help Android developers to utilize the super fast build system BUCK with several lines configuration;
 
-**[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**, an Android TDD bootstrap project, with well designed architecture and collection of awesome libraries;
+**[AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap)**, an Android TDD bootstrap project, with well designed architecture and collection of awesome libraries, including TDD / code coverage / CI / code quality integration;
 
-**[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)**, Android Audio encapsulation library, with part Rx support;
+**[RxAndroidAudio](https://github.com/Piasy/RxAndroidAudio)**, Android Audio API encapsulation library, with part Rx support;
 
 **[notes](https://github.com/Piasy/notes)**, this is my tech notes in daily reading and practicing;
 
