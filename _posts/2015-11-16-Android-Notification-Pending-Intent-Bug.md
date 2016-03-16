@@ -3,7 +3,7 @@ layout: post
 title: 安卓通知栏消息点击启动Activity时“Intent flag残留”问题
 tags:
     - 安卓开发
-    - 系统坑
+    - 踩坑之旅
 ---
 
 今天开发的过程中偶遇一个系统的bug：响应通知栏消息，启动一个新的Activity，之前代码写得有问题，为intent设置了`Intent.FLAG_ACTIVITY_CLEAR_TASK`这个flag，删除这行代码重新安装之后，竟然发现修改不起作用，启动Activity的行为依然是清除了之前所有的Activity，疑惑之余，对这个问题进行了进一步的测试，总结成此文。
