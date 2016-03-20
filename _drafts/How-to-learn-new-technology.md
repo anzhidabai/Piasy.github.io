@@ -46,9 +46,30 @@ tags:
 
 React则以虚拟dom高性能差异渲染、状态即视图、JFX等著称（实在了解不深，还要逐步加深认识）。
 
-
+练习的话还是要和react一起进行。
 
 ## React
+
+虚拟dom，组件化，属性与状态，JFX
+
+**redux**，一种架构模式，FB推出react同时也提出了flux架构
+
++ 全局唯一store，负责维护应用的状态
++ 通过action改变状态
++ reducer：old state + action => new state
+  + reducer必须pure，没有随机性，没有外部依赖，相同的输入状态和action，必须要有相同的输出，没有副作用，没有API调用，没有修改，只是计算（reduce）
+  + 新状态不是对旧状态的修改，而是一个新的copy，然后再修改之后返回
+  + reducer的组合，可以把不同的action按照其责任相关性“外包”出去，形成组合的效果，不同的部分负责完全独立的子state
+
+实践！
+
++ 设计action，用户场景
++ 设计state形状，数据结构
++ 编写reducer，合理组合
++ reducer编写时TDD
++ 设计presentational component，TDD
++ 设计container component，TDD
++ connecting the dots，TDD
 
 ## Kotlin
 

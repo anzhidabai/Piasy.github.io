@@ -54,11 +54,10 @@ service manager是binder守护进程，它有几个线程来处理请求？只�
 
 如此看来，整个过程都是同步的？
 
-
-### ActivityStack::xxxLocked，从名字推断是同步互斥的方法调用，但是它的locked机制是什么？
+### ActivityStack::xxxLocked，从名字推断是互斥的方法调用，但是它的locked机制是什么？
+这些函数的调用都是包在`synchronized(this)`中的，以此达到的互斥效果。
 
 ### ActivityStack::mResumedActivity，ActivityStack::mPausingActivity，它们的含义，以及维护/修改过程？
+ActivityStack::mResumedActivity，当前正在运行的activity（已resume尚未pause）
 
-### ActivityStack::mResumedActivity，当前正在运行的activity（已resume尚未pause）
-
-### ActivityStack::mPausingActivity，pause activity时，在启动新的activity之前，用来引用被pause的activity
+ActivityStack::mPausingActivity，pause activity时，在启动新的activity之前，用来引用被pause的activity
