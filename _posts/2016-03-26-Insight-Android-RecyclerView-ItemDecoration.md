@@ -135,6 +135,12 @@ drawVertical 是为纵向的 RecyclerView 绘制 divider，遍历每个 *child v
 
 <img src="/img/201603/recycler-view-decoration-demo.gif" alt="整体效果" style="height: 400px;">
 
+## 小结
++ getItemOffsets 中为 outRect 设置的4个方向的值，将被计算进所有 decoration 的尺寸中，而这个尺寸，被计入了 RecyclerView 每个 item view 的 padding 中
++ 在 onDraw 为 divider 设置绘制范围，并绘制到 canvas 上，而这个绘制范围可以超出在 getItemOffsets 中设置的范围，但由于 decoration 是绘制在 child view 的底下，所以并不可见，但是会存在 overdraw
++ decoration 的 onDraw，child view 的 onDraw，decoration 的 onDrawOver，这三者是依次发生的
++ onDrawOver 是绘制在最上层的，所以它的绘制位置并不受限制
+
 ## 脚注
 [^three-method]: 不算被 Deprecated 的方法
 [^add-together]: 把 left, top, right, bottom 4个属性分别累加
