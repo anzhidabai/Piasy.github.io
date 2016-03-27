@@ -108,7 +108,7 @@ logcat日志如下：
 
 查看最近任务，仍然有两个task，但是查看dumpsys以及logcat：
 <img src="/img/201603/test_result_destroy_top_dumpsys.jpg" alt="测试3 dumpsys的结果">
-<img src="/img/201603/test_result_destroy_top_logcat.png" alt="测试3 logcat的结果">
+<img src="/img/201603/test_result_destroy_top_logcat.jpg" alt="测试3 logcat的结果">
 
 我们可以看到，第一次启动的SimpleActivity就被pop（destroy）了，从而把未在栈顶的SingleTaskFirstActivity提到了栈顶。这也验证了back stack内的activity不会重新排序，最会pop和push的事实。
 
