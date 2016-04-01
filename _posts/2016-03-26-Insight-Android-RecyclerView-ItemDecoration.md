@@ -9,7 +9,7 @@ tags:
 
 RecyclerView 已经推出了一年多了，日常开发中也已经彻底从 ListView 迁移到了 RecyclerView，但前两天有人在一个安卓群里面问了个关于最顶上的 item view 加蒙层的问题，被人用 ItemDecoration 完美解决。此时我发现自己对 RecyclerView 的使用一直太过基本，更深入更强大的功能完全没有涉及，像 ItemDecoration, ItemAnimator, SmoothScroller, OnItemTouchListener, LayoutManager 之类，以及 RecyclerView 重用 view 的原理。网上也有很多对 RecyclerView 使用的讲解博客，要么讲的内容非常少，要么提到了高级功能，但是并没讲代码为什么这样写，每个方法和参数的含义是什么，像[张鸿洋的博客](http://blog.csdn.net/lmj623565791/article/details/45059587){:target="_blank"}，也讲了 ItemDecoration 的使用，但是看了仍然云里雾里，只能把他的代码拿来用，并不能根据自己的需求编写自己的 ItemDecoration。
 
-在这个系列中，我将对上述各个部分进行深入研究，目标就是看了这一系列的文章之后，开发者可以清楚快捷的根据自己的需求，编写自己需要的各个高级模块。本系列第一篇就聚焦在：RecyclerView.ItemDecoration。本文涉及到的完整代码可以在[ Github 获取](https://github.com/Piasy/AndroidPlayground/tree/master/recyclerviewadvanceddemo){:target="_blank"}。
+在这个系列中，我将对上述各个部分进行深入研究，目标就是看了这一系列的文章之后，开发者可以清楚快捷的根据自己的需求，编写自己需要的各个高级模块。本系列第一篇就聚焦在：RecyclerView.ItemDecoration。本文涉及到的完整代码可以在[ Github 获取](https://github.com/Piasy/AndroidPlayground/tree/905bf72262637961af182a82e71427957fe77f7e/recyclerviewadvanceddemo){:target="_blank"}。
 
 ## TL; DR
 + getItemOffsets 中为 outRect 设置的4个方向的值，将被计算进所有 decoration 的尺寸中，而这个尺寸，被计入了 RecyclerView 每个 item view 的 padding 中
