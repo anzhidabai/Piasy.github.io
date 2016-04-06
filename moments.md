@@ -4,6 +4,8 @@ title: 时刻
 permalink: /moments/
 ---
 
+  * 2016年4月6号，follower突破200，dashboard 5个repo star超过1.5K，利用JW等大神打了两次广告后，被删代码鄙视了，以后再也不敢了-_-#
+  
   * 2016年3月12号，更换博客主题，来自[Hux](http://huangxuan.me/){:target="_blank"}
   
   * 2016年2月28号，开启[安卓开发真经计划（Journey to the truth）](http://journey.piasy.com/){:target="_blank"}，逐步约见有经验的前辈取经
