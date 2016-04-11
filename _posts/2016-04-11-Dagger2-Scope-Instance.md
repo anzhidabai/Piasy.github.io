@@ -14,6 +14,7 @@ tags:
 + Scope 注解必须用在 module 的 provide 方法上，否则并不能达到局部单例的效果；
 + 如果 module 的 provide 方法使用了 scope 注解，那么 component 就必须使用同一个注解，否则编译会失败；
 + 如果 module 的 provide 方法没有使用 scope 注解，那么 component 和 module 是否加注解都无关紧要，可以通过编译，但是没有局部单例效果；
++ 对于直接使用 @Inject 构造函数的依赖，如果把 scope 注解放到它的类上，而不是构造函数上，就能达到局部单例的效果了；
 
 ## 废话不说
 测试准备过程很简单，不说废话，直接上代码，然后分析 apt 生成的代码，再看 log 结果。
@@ -182,3 +183,13 @@ dagger2 对父子类的支持还有一个小坑（称之为注意事项更恰当
 + Scope 注解必须用在 module 的 provide 方法上，否则并不能达到局部单例的效果；
 + 如果 module 的 provide 方法使用了 scope 注解，那么 component 就必须使用同一个注解，否则编译会失败；
 + 如果 module 的 provide 方法没有使用 scope 注解，那么 component 和 module 是否加注解都无关紧要，可以通过编译，但是没有局部单例效果；
++ 对于直接使用 @Inject 构造函数的依赖，如果把 scope 注解放到它的类上，而不是构造函数上，就能达到局部单例的效果了；
+
+## 4.11 晚更新
+在上面的测试过程中，我发现尽管 `DemoDirectInjectDependency` 的构造函数使用了 `@ActivityScope` 注解，dagger2 并不会用 ScopedProvider 来提供这个依赖，它依然会存在多个实例。一开始我觉得这可能是 dagger2 的一个 bug，所以在 github 上提了[一个 issue](https://github.com/google/dagger/issues/358){:target="_blank"}，很快有人在 issue 下进行了回复，虽然他的回复并不是直接给出解决方案，但却让我发现了一个解决方案：
+
++ **对于直接使用 @Inject 构造函数的依赖，如果把 scope 注解放到它的类上，而不是构造函数上，就能达到局部单例的效果了**；
+
+而这一点也正符合 JSR330 对 Scope 的规定，只能用于类的注解。~~尽管 dagger2 在 module 的 provide 方法上利用了 scope 注解，但这是为了给我们尽可能大的灵活性，否则对于一个 module 需要有多个 scope 的情形，我们只能使用 module 组合的方式了。~~ 既然 component 必须和它所有的 module 的 provide 方法使用同一个 scope，而且一个 module 的所有 provide 方法又必须使用同一个 scope （允许有的被 scope 注解，有的不被 scope 注解，但所有使用注解的都必须使用同一个 scope 注解），那何不直接使用 scope 注解 module 类呢？
+
+其实还是灵活性，上面一段开头的话也并不算错误，只不过这里的灵活性不是同一个 module 可以提供 ScopeA 和 ScopeB 的依赖，而是同一个 module 可以提供某种 scope 的依赖或者没有 scope 的依赖。而这种需求也是很常见的，不同组件需要同一类型的依赖，但它们必须使用不同的实例。
