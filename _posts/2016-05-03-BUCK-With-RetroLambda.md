@@ -130,4 +130,4 @@ java \
 运行修改过后的 BUCK 编译，成功！
 
 ## 后续工作
-这次对 BUCK 的修改量很少，只有一行代码，但却解决了困扰我们长达半年的一个问题，这段心酸岁月终于过去了。修改内容已经提交 [pr](https://github.com/facebook/buck/pull/732){:target="_blank"} 到 BUCK repo，希望能够尽快合入主干，而这个 RetroLambda 的脚本也是有可能自动生成的，所以也加入到了 OkBuck 的开发日程中，近日就将完成。届时欢迎大家使用，尽情体验 lambda + BUCK 的畅快淋漓！
+这次对 BUCK 的修改量很少，只有一行代码，但却解决了困扰我们长达半年的一个问题，这段心酸岁月终于过去了。修改内容已经提交 [pr](https://github.com/facebook/buck/pull/732){:target="_blank"} 到 BUCK repo，希望能够尽快合入主干，而这个 RetroLambda 的脚本也是有可能自动生成的，所以也加入到了 OkBuck 的开发日程中，~~近日就将完成~~ 已经在 1.0.0-beta9 发布。届时欢迎大家使用，尽情体验 lambda + BUCK 的畅快淋漓！
