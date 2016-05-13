@@ -8,6 +8,8 @@ tags:
 
 在[完美的安卓 model 层架构（上）](/2016/05/06/Perfect-Android-Model-Layer/){:target="_blank"}中，我主要介绍了网络请求、数据库持久化、Immutable/Value types、Json 序列化与反序列化这四部分内容，而剩下的关于 Parcelable，ZonedDateTime，null safety，rx error handling，config injection以及测试相关的内容，将在本篇中进行介绍。
 
+声明：本文已独家授权微信公众号Android程序员（AndroidTrending）在微信公众号平台原创首发。
+
 ## 1. 回顾
 先回顾一下上篇中的架构：
 

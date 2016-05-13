@@ -8,6 +8,8 @@ tags:
 
 前些日子在 [Android Weekly](http://androidweekly.net/){:target="_blank"} 上看到了一篇[介绍 SqlDelight 使用](http://blog.alexsimo.com/delightful-persistence-android/){:target="_blank"}的文章，虽然之前了解过 [SqlDelight](https://github.com/square/sqldelight){:target="_blank"} 和 [SqlBrite](https://github.com/square/sqlbrite){:target="_blank"}，但却一直没有尝试过。但这次我被文章中的例子惊艳到了，而且 SqlDelight 还能和 [AutoValue](https://github.com/google/auto/tree/master/value){:target="_blank"} 兼容使用，进一步打消了我的顾虑，我就赶紧在 [AndroidTDDBootStrap](https://github.com/Piasy/AndroidTDDBootStrap){:target="_blank"} 项目进行了尝试，并且甩掉了之前使用的 [StorIO](https://github.com/pushtorefresh/storio){:target="_blank"} 这个 ORM 库。迁移完毕之后我不得不惊叹，我 _遇见_ 了一套完美的安卓 model 层架构。本文所有的代码均来自[我在 Github 上的 AndroidTDDBootStrap 项目](https://github.com/Piasy/AndroidTDDBootStrap/){:target="_blank"}。
 
+声明：本文已独家授权微信公众号Android程序员（AndroidTrending）在微信公众号平台原创首发。
+
 ## 整体架构
 
 ![架构图](/img/201605/perfect_android_model_layer.png)
