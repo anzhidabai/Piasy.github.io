@@ -234,27 +234,33 @@ auto-value-gson 会为我们生成一个 GsonTypeAdapter 类，用于进行 `Git
   }
 ~~~
 
-简洁起见，我省略了 `read` 方法的代码。这里我们可以看到，adapter 的实现完全避免了反射的使用，这一点对性能也将会有提升（具体有多大的提升，我打算做个测试），关于反射的性能问题，感兴趣的朋友可以阅读[我翻译的 NimbleDroid 团队的这篇文章](http://blog.nimbledroid.com/2016/02/23/slow-Android-reflection-zh.html){:target="_blank"}。
+简洁起见，我省略了 `read` 方法的代码。这里我们可以看到，adapter 的实现完全避免了反射的使用，这一点对性能也将会有提升（具体有多大的提升，~~我打算做个测试~~ 可以参考文末的测试结果），关于反射的性能问题，感兴趣的朋友可以阅读[我翻译的 NimbleDroid 团队的这篇文章](http://blog.nimbledroid.com/2016/02/23/slow-Android-reflection-zh.html){:target="_blank"}。
 
-生成了 adapter 之后，我们还需要把它注册到 Gson 中，这一步可以参考 auto-value-gson 的项目主页。
+**16.5.17 更新**：之前由于 auto-value-gson 不能自动生成 adapter factory，所以我引入了自己的一个 fork，但其中使用了反射，会造成严重的性能问题，具体可以查看文末的附录。而新版本 auto-value-gson 支持自动生成 adapter factory，所以这部分就切换回了原版。
 
-在 AndroidTDDBootStrap 项目中我并没有直接使用这个库，而是使用了一个我自己的 fork。这里如果过只需要为每个类添加一个静态方法倒还不会觉得特别麻烦，但我们还需要手动把每个类的 adapter 注册到 Gson 中，这就比较麻烦了。在[我的这个 fork](https://github.com/Piasy/auto-value-gson/tree/autogson){:target="_blank"} 中，我们只需要为每个类添加一个注解即可，唯一美中不足的是，adapter 的注册会涉及到反射的使用，因此我更需要对反射的性能进行一下测试了。
+除了 adapter 之外，auto-value-gson 还为我们生成了 adapter factory，让我们仅需一行代码就能完成注册。
 
-注解的使用代码如下：
+生成的 adapter factory 代码如下：
 
 ~~~ java
-@AutoValue
-@AutoGson(AutoValue_GithubUser.GsonTypeAdapter.class)
-public abstract class GithubUser implements GithubUserModel {
-  ...
+public final class AutoValueGsonTypeAdapterFactory implements TypeAdapterFactory {
+  @Override
+  public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+    Class<T> rawType = (Class<T>) type.getRawType();
+    if (rawType.equals(GithubUser.class)) {
+      return (TypeAdapter<T>) GithubUser.typeAdapter(gson);
+    } else {
+      return null;
+    }
+  }
 }
 ~~~
 
-而 Gson 的构造过程中我们只需要注册一个 adapter factory 即可：
+Gson 的构造过程中我们只需要注册一个 adapter factory 即可：
 
 ~~~ java
 new GsonBuilder()
-    .registerTypeAdapterFactory(new AutoTypeAdapterFactory())
+    .registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory())
     .create();
 ~~~
 
@@ -268,3 +274,35 @@ new GsonBuilder()
 ## 致谢
 非常感谢 _安卓程序员_ 公众号的运营者 _汤涛_ 大哥对本文提出的宝贵建议。
 
+## 附：AutoGson 反射性能测试
+为了测量 type adapter factory 是否使用反射、序列化时是否使用反射的性能区别，我做了几组简单地实验：
+
++ 在 [hello world 工程](https://github.com/Piasy/AndroidPlayground/tree/master/perf){:target="_blank"}中
+  + 创建 adapter 时使用反射，序列化时不使用反射（`toJson` 函数指定类型），记为 create；
+  + 创建 adapter 时不使用反射，序列化时使用反射（`toJson` 函数不指定类型），记为 toJson；
+  + 创建 adapter 时使用反射，序列化时使用反射，记为 create & toJson；
+  + 创建 adapter 时不使用反射，序列化时不使用反射，记为 reflectless；
++ 在 AndroidTDDBootStrap 工程中进行同样的测试
+  
+实验都是新创建 Gson 对象，并创建新对象，调用 toJson 10000 次。实验在两台手机上进行：
+
++ 三星 A7，安卓 4.4.4，8 核 CPU，2 GB RAM
++ 华为 3C，安卓 4.4.2，4 核 CPU，2 GB RAM
+
+测试结果如下，单位纳秒：
+
+\- | reflectless | create | toJson | create & toJson
+A7, hello world | 1,830,788,333 | 3,076,125,832 | 5,044,041,092 | 5,594,355,988
+A7, AndroidTDDBootStrap | 1,872,459,687 | 3,180,990,155 | 5,207,894,529 | 6,128,111,873
+3C, hello world | 5,927,091,874 | 8,829,257,395 | 16,688,314,635 | 17,324,313,488
+3C, AndroidTDDBootStrap | 4,886,309,062 | 9,427,969,531 | 18,550,120,207 | 19,450,675,780
+
+首先我们看看只利用反射创建 adapter 的开销：在 A7 上，hello world 工程中耗时增加 **`68%`**，AndroidTDDBootStrap 工程中耗时增加 **`69.8%`**；在 3C 上，hello world 工程中耗时增加 **`48.9%`**，AndroidTDDBootStrap 工程中耗时增加 **`92.9%`**。我们可以看到，**每次创建 adapter 都使用反射，耗时增加了 `48.9% ~ 92.9%`**。
+
+这里需要注意，为了让运行结果可测量，我反复创建了新的 Gson 对象 10000 次，实际使用中，我们通常会使用一个全局单例的 Gson 对象，而 Gson 对 adapter 进行了缓存处理，所以一个 adapter 只会利用反射创建一次。
+
+再来看看只利用反射进行序列化的开销：在 A7 上，hello world 工程中耗时增加 **`175.5%`**，AndroidTDDBootStrap 工程中耗时增加 **`178.1%`**；在 3C 上，hello world 工程中耗时增加 **`181.5%`**，AndroidTDDBootStrap 工程中耗时增加 **`279.6%`**。我们可以看到，**每次执行 `toJson` 都使用反射，耗时增加了 `175.5% ~ 279.6%`**。
+
+最后我们看看利用反射创建 adapter 和进行序列化的开销：在 A7 上，hello world 工程中耗时增加 **`205.5%`**，AndroidTDDBootStrap 工程中耗时增加 **`227.2%`**；在 3C 上，hello world 工程中耗时增加 **`192.2%`**，AndroidTDDBootStrap 工程中耗时增加 **`298%`**。我们可以看到，**每次执行 `toJson` 都使用反射，耗时增加了 `192.2% ~ 298%`**。
+
+所以，Json 序列化和反序列化时，对反射的使用还是非常影响性能的，而利用 auto-value-gson，我们可以轻易地避免这块额外的性能开销，唯一需要注意的是，调用 `toJson` 时，**务必带上第二个参数**。
