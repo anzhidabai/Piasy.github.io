@@ -19,7 +19,7 @@ tags:
 今天为了解决会导致整个APP结束的bug，再次遭遇“Intent flag残留”这一系统bug，并且意识到了它的存在。然后我就这个问题进行了较为全面的测试，并且针对功能需求，找到了一个折衷解决方案。
 
 ## PoC
-[PoC工程地址](https://github.com/Piasy/AndroidPlayground/tree/d19354008e398cad41377015131bff0976c29e61/notificationtest)
+[PoC工程地址](https://github.com/Piasy/AndroidPlayground/tree/master/reproduce/NotificationTest)
 
 工程包含两个Activity：`MainActivity`和`NotifyActivity`，前者是LaunchActivity，包含一个Button，点击后，在通知栏发送一个通知，该通知点击后将启动`NotifyActivity`，与此同时，立即启动一个`NotifyActivity`。这两个Activity在`AndroidManifest.xml`文件中均未设置任何`launchMode`，两处启动`NotifyActivity`的Intent（立即启动，点击通知启动）均未设置任何flag。
 
@@ -30,7 +30,7 @@ tags:
 
 首先，初始状态下，第一次按下返回键，将回到首先启动的`NotifyActivity`，再次按下返回键，将回到`MainActivity`，再次按下返回键，将回到桌面。
 
-现在，在创建通知栏通知的代码中，为启动`NotifyActivity`的Intent设置`Intent.FLAG_ACTIVITY_CLEAR_TASK`这个flag，即取消[MainActivity.java的43行](https://github.com/Piasy/AndroidPlayground/blob/d19354008e398cad41377015131bff0976c29e61/notificationtest%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fpiasy%2Fnotificationtest%2FMainActivity.java#L43)注释。这时app的行为不变！是的，不变！不过也没什么好震惊的，上文已经描述这个bug了。
+现在，在创建通知栏通知的代码中，为启动`NotifyActivity`的Intent设置`Intent.FLAG_ACTIVITY_CLEAR_TASK`这个flag，即取消[MainActivity.java的38行](https://github.com/Piasy/AndroidPlayground/blob/master/reproduce/NotificationTest/src/main/java/com/github/piasy/notificationtest/MainActivity.java#L38)注释。这时app的行为不变！是的，不变！不过也没什么好震惊的，上文已经描述这个bug了。
 
 这里我直接把下一步的测试方法说出来，虽然这种方法能够使代码的更改生效，但这并不能作为解决方法，因为这种方法是：先卸载再装新版/重启手机。
 

@@ -6,7 +6,7 @@ tags:
     - PoC
 ---
 
-最近一直在补充framework以及更深入的安卓开发知识，看到[老罗的博客](http://blog.csdn.net/luoshengyang/article/details/6714543)以及[developer文档](http://developer.android.com/guide/components/tasks-and-back-stack.html)关于task, launchMode, intent flag的分析说明之后，不禁想要自己动手测试一下，验证他们所说的是否属实，个人认为当属目前最全面的测试与总结了（欢迎补充与质疑），完整代码可以在[Github](https://github.com/Piasy/AndroidPlayground/tree/master/taskdemo)获取。
+最近一直在补充framework以及更深入的安卓开发知识，看到[老罗的博客](http://blog.csdn.net/luoshengyang/article/details/6714543)以及[developer文档](http://developer.android.com/guide/components/tasks-and-back-stack.html)关于task, launchMode, intent flag的分析说明之后，不禁想要自己动手测试一下，验证他们所说的是否属实，个人认为当属目前最全面的测试与总结了（欢迎补充与质疑），完整代码可以在[Github](https://github.com/Piasy/AndroidPlayground/blob/master/showcase/TaskDemo)获取。
 
 ## TL; DR
 + 同一task内的activity可以是来自不同进程的activity

@@ -6,7 +6,7 @@ tags:
     - RecyclerView
 ---
 
-本文继上篇 [ItemDecoration](http://blog.piasy.com/2016/03/26/Insight-Android-RecyclerView-ItemDecoration/){:target="_blank"} 之后，是深入理解 RecyclerView 系列的第二篇，关注于 ItemAnimator，主要是分析 [RecyclerView Animators](https://github.com/wasabeef/recyclerview-animators){:target="_blank"} 这个库的原理，然后总结如何自己编写自定义的 ItemAnimator。本文涉及到的完整代码可以在[ Github 获取](https://github.com/Piasy/AndroidPlayground/tree/b847901ee386c8c9f87234220031117a3e306cf3/recyclerviewadvanceddemo){:target="_blank"}。
+本文继上篇 [ItemDecoration](http://blog.piasy.com/2016/03/26/Insight-Android-RecyclerView-ItemDecoration/){:target="_blank"} 之后，是深入理解 RecyclerView 系列的第二篇，关注于 ItemAnimator，主要是分析 [RecyclerView Animators](https://github.com/wasabeef/recyclerview-animators){:target="_blank"} 这个库的原理，然后总结如何自己编写自定义的 ItemAnimator。本文涉及到的完整代码可以在[ Github 获取](https://github.com/Piasy/AndroidPlayground/blob/master/effect/RecyclerViewAdvancedDemo/){:target="_blank"}。
 
 ## 先看看类结构
 + `DefaultItemAnimator` extends `SimpleItemAnimator` extends `RecyclerView.ItemAnimator`

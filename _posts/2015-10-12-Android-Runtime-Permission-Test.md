@@ -6,7 +6,7 @@ tags:
     - PoC
 ---
 
-Android 6.0引入了Runtime Permission模型，一方面用户不必在安装APP时便授予所有权限，另一方面，对于第三方ROM，APP自身也能方便地判断是否有某项权限了。在本文中，我将以读取通讯录为例对运行时权限进行一次全面的测试，完整代码可以[在Github下载](https://github.com/Piasy/AndroidPlayground/blob/master/appmarshmallow%2Fsrc%2Fmain%2Fjava%2Fcom%2Fgithub%2Fpiasy%2Fandroidplayground%2Fappmarshmallow%2FMainActivity.java)。
+Android 6.0引入了Runtime Permission模型，一方面用户不必在安装APP时便授予所有权限，另一方面，对于第三方ROM，APP自身也能方便地判断是否有某项权限了。在本文中，我将以读取通讯录为例对运行时权限进行一次全面的测试，完整代码可以[在Github下载](https://github.com/Piasy/AndroidPlayground/blob/master/try/AppMarshmallow/src/main/java/com/github/piasy/androidplayground/appmarshmallow/MainActivity.java)。
 
 ## 快速使用运行时权限
 +  在AndroidManifest.xml中声明权限，就算是运行时权限，这一步也是不能忘记的：
