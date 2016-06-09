@@ -41,7 +41,7 @@ tags:
 
 ## 3. Hello world
 
-先看一下最简单的完整例子（下文有详细分析），绘制一个三角形：
+先看一下最简单的完整例子（下文有详细分析，完整代码可以在 [Github 获取](https://github.com/Piasy/AndroidPlayground/blob/master/try/TryOpenGL/src/main/java/com/github/piasy/tryopengl/MainActivity.java){:target="_blank"}），绘制一个三角形：
 
 <img src="/img/201606/open_gl_triangle.png" alt="/img/201606/open_gl_triangle.png" style="height:400px">
 
