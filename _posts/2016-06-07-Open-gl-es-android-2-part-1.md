@@ -142,7 +142,23 @@ glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
 RenderMode 有两种，`RENDERMODE_WHEN_DIRTY` 和 `RENDERMODE_CONTINUOUSLY`，前者是懒惰渲染，需要手动调用 `glSurfaceView.requestRender()` 才会进行更新，而后者则是不停渲染。
 
-### 3.2. GLSL 程序
+### 3.2. `GLSurfaceView.Renderer`
+
+Renderer 包含三个接口：
+
+~~~ java
+public interface Renderer {
+    void onSurfaceCreated(GL10 gl, EGLConfig config);
+    void onSurfaceChanged(GL10 gl, int width, int height);
+    void onDrawFrame(GL10 gl);
+}
+~~~
+
+`onSurfaceCreated` 在 surface 创建时被回调，通常用于进行初始化工作，只会被回调一次；`onSurfaceChanged` 在每次 surface 尺寸变化时被回调，注意，第一次得知 surface 的尺寸时也会回调；`onDrawFrame` 则在绘制每一帧的时候回调。
+
+有的时候，我们的初始化工作可能需要依赖 surface 的尺寸，所以这里我们把初始化工作放到了 `onSurfaceChanged` 方法中。
+
+### 3.3. GLSL 程序
 
 和普通的 view 利用 canvas 来绘制不一样，OpenGL 需要加载 GLSL 程序，让 GPU 进行绘制。所以我们需要定义 shader 代码，并在 `onSurfaceChanged` 回调中加载：
 
@@ -177,9 +193,9 @@ GLSL 的语法并不是本文的主要内容，所以就不深入展开。我们
 
 需要指出的是，shader 代码中的变量索引，在 GLSL 程序的生命周期内（两次链接之间），都是固定的，只需要获取一次。
 
-### 3.3. 绘制
+### 3.4. 绘制
 
-绘制的过程其实就是为 shader 代码变量赋值，并调用绘制命令的过程：
+我们在 `onDrawFrame` 回调中执行绘制操作，绘制的过程其实就是为 shader 代码变量赋值，并调用绘制命令的过程：
 
 ~~~ java
 @Override
