@@ -1,6 +1,6 @@
 ---
 layout: post
-title: copyright, copyleft？
+title: 那些年，我们被人窃取过的博客
 tags:
     - 百无聊赖
 ---
