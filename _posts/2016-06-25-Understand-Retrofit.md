@@ -11,7 +11,7 @@ tags:
 
 ## 1，整体思路
 
-从使用方法出发，首先是怎么使用，其次是我们使用的功能在内部是如何实现的，实现方案上有什么技巧，有什么范式。
+从使用方法出发，首先是怎么使用，其次是我们使用的功能在内部是如何实现的，实现方案上有什么技巧，有什么范式。全文基本上是对 Retrofit 源码的一个分析与导读，非常建议大家下载 Retrofit 源码之后，跟着本文，过一遍源码。对于技巧和范式，由于目前我的功力还不到位，分析内容没多少，欢迎大家和我一起讨论。
 
 ## 2，基本用例
 
@@ -44,18 +44,18 @@ GitHubService github = retrofit.create(GitHubService.class);
 但 `create` 方法是怎么创建 API 实例的呢？
 
 ~~~ java
-  public <T> T create(final Class<T> service) {
-    // 省略非关键代码
-    return (T) Proxy.newProxyInstance(service.getClassLoader(), 
-        new Class<?>[] { service },
-        new InvocationHandler() {
-          @Override 
-          public Object invoke(Object proxy, Method method, Object... args)
-              throws Throwable {
-            // 先省略实现
-          }
-        });
-  }
+public <T> T create(final Class<T> service) {
+  // 省略非关键代码
+  return (T) Proxy.newProxyInstance(service.getClassLoader(), 
+      new Class<?>[] { service },
+      new InvocationHandler() {
+        @Override 
+        public Object invoke(Object proxy, Method method, Object... args)
+            throws Throwable {
+          // 先省略实现
+        }
+      });
+}
 ~~~
 
 创建 API 实例使用的是**动态代理技术**，关于动态代理的详细介绍，可以查看 [codeKK 公共技术点之 Java 动态代理](http://a.codekk.com/detail/Android/Caij/%E5%85%AC%E5%85%B1%E6%8A%80%E6%9C%AF%E7%82%B9%E4%B9%8B%20Java%20%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86){:target="_blank"}这篇文章。
@@ -78,26 +78,26 @@ List<Repo> repos = call.execute().body();
 现在我们来看看调用 `listRepos` 是怎么发出 HTTP 请求的。上面 `Retrofit#create` 方法返回时省略的代码如下：
 
 ~~~ java
-    return (T) Proxy.newProxyInstance(service.getClassLoader(), 
-        new Class<?>[] { service },
-        new InvocationHandler() {
-          private final Platform platform = Platform.get();
+return (T) Proxy.newProxyInstance(service.getClassLoader(), 
+    new Class<?>[] { service },
+    new InvocationHandler() {
+      private final Platform platform = Platform.get();
 
-          @Override 
-          public Object invoke(Object proxy, Method method, Object... args)
-              throws Throwable {
-            // If the method is a method from Object then defer to normal invocation.
-            if (method.getDeclaringClass() == Object.class) {
-              return method.invoke(this, args);
-            }
-            if (platform.isDefaultMethod(method)) {
-              return platform.invokeDefaultMethod(method, service, proxy, args);
-            }
-            ServiceMethod serviceMethod = loadServiceMethod(method);
-            OkHttpCall okHttpCall = new OkHttpCall<>(serviceMethod, args);
-            return serviceMethod.callAdapter.adapt(okHttpCall);
-          }
-        });
+      @Override 
+      public Object invoke(Object proxy, Method method, Object... args)
+          throws Throwable {
+        // If the method is a method from Object then defer to normal invocation.
+        if (method.getDeclaringClass() == Object.class) {
+          return method.invoke(this, args);
+        }
+        if (platform.isDefaultMethod(method)) {
+          return platform.invokeDefaultMethod(method, service, proxy, args);
+        }
+        ServiceMethod serviceMethod = loadServiceMethod(method);
+        OkHttpCall okHttpCall = new OkHttpCall<>(serviceMethod, args);
+        return serviceMethod.callAdapter.adapt(okHttpCall);
+      }
+    });
 ~~~
 
 如果调用的是 `Object` 的方法，例如 `equals`，`toString`，那就直接调用。如果是 default 方法（Java 8 引入），就调用 default 方法。这些我们都先不管，因为我们在安卓平台调用 `listRepos`，肯定不是这两种情况，那这次调用真正干活的就是这三行代码了（好好记住这三行代码，因为接下来很长的篇幅都是在讲它们 :) ）：
@@ -178,7 +178,8 @@ private CallAdapter<?> createCallAdapter() {
   Annotation[] annotations = method.getAnnotations();
   try {
     return retrofit.callAdapter(returnType, annotations);
-  } catch (RuntimeException e) { // Wide exception range because factories are user code.
+  } catch (RuntimeException e) { 
+    // Wide exception range because factories are user code.
     throw methodError(e, "Unable to create call adapter for %s", returnType);
   }
 }
@@ -193,7 +194,8 @@ private Converter<ResponseBody, T> createResponseConverter() {
   Annotation[] annotations = method.getAnnotations();
   try {
     return retrofit.responseBodyConverter(responseType, annotations);
-  } catch (RuntimeException e) { // Wide exception range because factories are user code.
+  } catch (RuntimeException e) { 
+    // Wide exception range because factories are user code.
     throw methodError(e, "Unable to create converter for %s", responseType);
   }
 }
@@ -444,8 +446,8 @@ retrofit 模块内置了 `BuiltInConverters`，只能处理 `ResponseBody`， `R
 
 ~~~ java
 @Override
-public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
-    Retrofit retrofit) {
+public Converter<ResponseBody, ?> responseBodyConverter(Type type, 
+    Annotation[] annotations, Retrofit retrofit) {
   TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
   return new GsonResponseBodyConverter<>(gson, adapter);
 }
