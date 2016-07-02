@@ -318,3 +318,45 @@ public void onImageAvailable(ImageReader reader) {
     }
 }
 ~~~
+
+## 方向问题
+
+### Activity 显示方向
+
+~~~ java
+int rotation = getWindowManager().getDefaultDisplay().getRotation();
+~~~
+
+返回值可能为 `Surface.ROTATION_0`，`Surface.ROTATION_90`，`Surface.ROTATION_180`，`Surface.ROTATION_270`。
+
+根据其 Javadoc，手机基本上都是长方形，物理上有上下左右之分（菜单、home、返回键认为在下方），如果界面元素的顶部也在物理上方，那就是 0，如果界面元素顶部在物理右方，那就是 90，顺时针依次类推。
+
+### Camera 方向
+
+#### Camera1
+
+~~~ java
+Camera.CameraInfo info = new Camera.CameraInfo();
+Camera.getCameraInfo(mIsFront ? Camera.CameraInfo.CAMERA_FACING_FRONT
+        : Camera.CameraInfo.CAMERA_FACING_BACK, info);
+// info.orientation 就是相机的角度
+~~~
+
+在三星 A7 手机上实测，后置相机，读出的结果为 90，前置相机读出的结果为 270，它们预览时在屏幕上方向是一样的，图像顶部都在物理左侧。
+
+Javadoc 中的描述有些难以理解：如果后置相机图像的顶部和手机物理右方对齐（aligned），那就是 90，如果前置相机图像的顶部和手机物理右方对齐，那就是 270。 _但和我们实测不太一致，是手机硬件问题，还是“对齐”意思理解的问题？我测了三星 A7，魅族 MX5，华为 P8，结果均一样，我怀疑是理解问题，或者是文档错误。_
+
+#### Camera2
+
+~~~ java
+CameraCharacteristics characteristics;
+Integer orientation = null;
+try {
+    characteristics = mCameraManager.getCameraCharacteristics(cameraId);
+    orientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+} catch (CameraAccessException e) {
+    e.printStackTrace();
+}
+int sensorOrientation = orientation == null ? 0 : orientation;
+// sensorOrientation 就是相机的角度
+~~~
