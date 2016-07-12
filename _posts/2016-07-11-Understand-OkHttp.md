@@ -157,9 +157,17 @@ private Response getResponseWithInterceptorChain() throws IOException {
 6. 配置 `OkHttpClient` 时设置的 `networkInterceptors`；
 7. 负责向服务器发送请求数据、从服务器读取响应数据的 `CallServerInterceptor`。
 
-在这里，位置决定了功能，最后一个 Interceptor 一定是负责和服务器实际通讯的，重定向、缓存等一定是在实际通讯之前的。我现在无法准确将这一设计对应到哪个或者哪几个设计模式，但我不得不感叹，确实很优雅！
+在这里，位置决定了功能，最后一个 Interceptor 一定是负责和服务器实际通讯的，重定向、缓存等一定是在实际通讯之前的。
 
-在这里我们先简单分析一下 `ConnectInterceptor` 和 `CallServerInterceptor`，看看 OkHttp 是怎么进行和服务器的实际通信的，其他的 interceptor 我们后面再一一分析。
+[责任链模式](https://zh.wikipedia.org/wiki/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F){:target="_blank"}在这个 `Interceptor` 链条中得到了很好的实践（感谢 Stay 一语道破，自愧弗如）。
+
+> 它包含了一些命令对象和一系列的处理对象，每一个处理对象决定它能处理哪些命令对象，它也知道如何将它不能处理的命令对象传递给该链中的下一个处理对象。该模式还描述了往该处理链的末尾添加新的处理对象的方法。
+
+对于把 `Request` 变成 `Response` 这件事来说，每个 `Interceptor` 都可能完成这件事，所以我们循着链条让每个 `Interceptor` 自行决定能否完成任务以及怎么完成任务（自力更生或者交给下一个 `Interceptor`）。这样一来，完成网络请求这件事就彻底从 `RealCall` 类中剥离了出来，简化了各自的责任和逻辑。两个字：优雅！
+
+责任链模式在安卓系统中也有比较典型的实践，例如 view 系统对点击事件（TouchEvent）的处理，具体可以参考[Android设计模式源码解析之责任链模式](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/tree/master/chain-of-responsibility/AigeStudio#android源码中的模式实现){:target="_blank"}中相关的分析。
+
+回到 OkHttp，在这里我们先简单分析一下 `ConnectInterceptor` 和 `CallServerInterceptor`，看看 OkHttp 是怎么进行和服务器的实际通信的。
 
 ##### 2.2.1.1，建立连接：`ConnectInterceptor`
 
