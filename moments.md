@@ -4,6 +4,8 @@ title: 时刻
 permalink: /moments/
 ---
 
+  * 2016年7月14号，[文章 拆轮子系列：拆 OkHttp](/2016/07/11/Understand-OkHttp/){:target="_blank"} 登上 [开发者头条榜首](http://toutiao.io/posts/lh7zkk){:target="_blank"}，达成成就[文章被开发者头条邮件推送](/img/moments/understand_okhttp_top_at_toutiao_io.png){:target="_blank"}
+  
   * 2016年5月30号，follower 突破 300，dashboard star 超过再次逼近 1.5K（transfer OkBuck 暴跌 300 多）
   
   * 2016年5月9号，来自 Uber 的工程师 [Gautam Korlam](https://github.com/kageiit){:target="_blank"} 强力加盟 [OkBuck](https://github.com/OkBuilds/OkBuck){:target="_blank"} 开发维护后，创建 [OkBuilds](https://github.com/OkBuilds){:target="_blank"}，并将相关 repo transfer
