@@ -44,7 +44,6 @@ tags:
 
 ~~~ java
 @AutoValue
-@AutoGson(AutoValue_GithubUser.GsonTypeAdapter.class)
 public abstract class GithubUser implements GithubUserModel, Parcelable {
     // ...
 }
@@ -313,17 +312,7 @@ mGithubUserDao.searchUser(query)
 
 在这套 model 层架构中，关于 ProGuard 有几点值得一提：
 
-### 6.1. AutoGson
-由于 auto-value-gson 生成的 `GsonTypeAdapter` 类的构造函数我们是通过反射进行调用的，所以需要配置保留，否则会被移除，产生问题。而由于 `GsonTypeAdapter` 类中我们完全没有利用反射进行序列化和反序列化，所以我们可以任由 ProGuard 对成员名进行混淆。
-
-~~~
-# AutoGson
--keepclassmembers class **$AutoValue_*$GsonTypeAdapter {
-    void <init>(com.google.gson.Gson);
-}
-~~~
-
-### 6.2. AutoParcel
+### 6.1. AutoParcel
 安卓系统对 Parcelable 的序列化和反序列化，需要我们的类中有一个名为 `CREATOR` 的成员，并且它不能进行混淆，否则会报错。
 
 ~~~
@@ -413,8 +402,7 @@ square way 的思路很简单，通过引入一层 delegate 接口，我们可�
 com.github.piasy.gh.model.users.dao -
         - DbUserDelegate.java
         - DbUserDelegateImpl.java
-        - GithubUserDao.java
-        - GithubUserDaoImpl.java
+        - GithubUserRepo.java
 ~~~
 
 `DbUserDelegate` 就是负责代理数据库操作的，它的接口如下：
@@ -430,11 +418,10 @@ public interface DbUserDelegate {
 }
 ~~~
 
-`GithubUserDao` 接口的实现如下：
+`GithubUserRepo` 的方法如下：
 
 ~~~ java
 @NonNull
-@Override
 public Observable<List<GithubUser>> searchUser(@NonNull final String query) {
     return mGithubApi.searchGithubUsers(query, GithubApi.GITHUB_API_PARAMS_SEARCH_SORT_JOINED,
             GithubApi.GITHUB_API_PARAMS_SEARCH_ORDER_DESC)
